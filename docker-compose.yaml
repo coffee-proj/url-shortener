@@ -1,0 +1,61 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: coffee
+      POSTGRES_PASSWORD: milk
+      POSTGRES_DB: postgres_db
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data/pgdata
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+        start_period: 10s
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  url-shortener:
+    image: url-shortener:latest
+    environment:
+      POSTGRES_HOST: postgres:5432
+      POSTGRES_USER: coffee
+      POSTGRES_PASSWORD: milk
+      POSTGRES_DB_NAME: postgres
+      REDIS_HOST: redis
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: "no"
+    ports:
+      - "9090:9090"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test:  wget --no-verbose --tries=1 --spider http://localhost:8080/ping || exit 1
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+
+
+volumes:
+  pgdata:
+    driver: local
+  redis_data:
+    driver: local
+

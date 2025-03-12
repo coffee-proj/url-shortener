@@ -1,0 +1,3 @@
+databaseChangeLog: #параметр в котором находятся миграции
+  - include:
+      file: db/changelog/changeset/create_urls_table.yaml

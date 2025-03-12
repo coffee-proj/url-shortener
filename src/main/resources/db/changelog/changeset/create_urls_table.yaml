@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: "1"
+      author: coffee
+      changes:
+        - createTable:
+            tableName: urls
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: full_url
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: false
+              - column:
+                  name: alias
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
