@@ -1,5 +1,7 @@
 package com.coffee.url_shortener.service.url;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.cache.annotation.Cacheable;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.coffee.url_shortener.entity.Url;
 import com.coffee.url_shortener.repository.UrlRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -31,6 +34,7 @@ public class UrlService {
         return url.getAlias();
     }
 
+    @Transactional
     @Cacheable(value = "urls")
     public Url getFullUrlByAlias(String shortened) throws LinkNotFoundException {
         Optional<Url> url = repository.getByAlias(shortened);
@@ -38,6 +42,11 @@ public class UrlService {
             throw new LinkNotFoundException("Url not found");
         }
 
-        return url.get();
+        Url res = url.get();
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
+        res.setReadAt(timestamp);
+        repository.save(res);
+
+        return res;
     }
 }

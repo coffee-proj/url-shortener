@@ -24,3 +24,8 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     unique: true
+              - column:
+                  name: read_at
+                  type: timestamp
+                  constraints:
+                    nullable: false

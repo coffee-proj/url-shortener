@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/url")
 public class UrlController {
-    private UrlService service;
+    private final UrlService service;
 
     public UrlController(UrlService service) {
         this.service = service;
