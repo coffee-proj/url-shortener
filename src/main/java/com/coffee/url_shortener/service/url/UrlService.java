@@ -1,8 +1,13 @@
 package com.coffee.url_shortener.service.url;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
+
+import javax.imageio.ImageIO;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -21,7 +26,6 @@ public class UrlService {
 
     public UrlService(UrlRepository repository) {
         this.repository = repository;
-
     }
 
     public String genAndSaveAlias(Url url) {
@@ -35,7 +39,7 @@ public class UrlService {
     }
 
     @Transactional
-    @Cacheable(value = "urls")
+    @Cacheable(value = "alias")
     public Url getFullUrlByAlias(String shortened) throws LinkNotFoundException {
         Optional<Url> url = repository.getByAlias(shortened);
         if (url.isEmpty()) {
@@ -48,5 +52,15 @@ public class UrlService {
         repository.save(res);
 
         return res;
+    }
+
+    public byte[] genQrCodeByUrl(String url) throws IllegalArgumentException, IOException {
+        BufferedImage image = AliasGenerator.generateQrcode(url);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(image, "png", baos);
+        byte[] imageBytes = baos.toByteArray();
+        
+        return imageBytes;
     }
 }

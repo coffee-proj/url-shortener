@@ -1,5 +1,6 @@
 package com.coffee.url_shortener.controller;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -49,8 +50,16 @@ public class GlobalExceptionHandler {
         return createErrorResponse(HttpStatus.NOT_FOUND, new Exception("Alias not found"));
     }
 
+
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<ErrorRes> proccessIOError(Exception exception) {
+        log.error(exception.getLocalizedMessage());
+        return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, new Exception("Something went wrong"));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorRes> proccessOtherError(Exception exception) {
+        log.error(exception.getLocalizedMessage());
         return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, new Exception("Something went wrong"));
     }
 

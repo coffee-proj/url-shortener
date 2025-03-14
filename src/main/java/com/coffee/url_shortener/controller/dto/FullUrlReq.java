@@ -15,6 +15,6 @@ public class FullUrlReq {
     @NotNull
     @URL(message = "Invalid input URL")
     @Schema(description = "Full url", example = "https://google.com/", requiredMode = RequiredMode.REQUIRED)
-    private String fullUrl;
+    private String url;
 
 }

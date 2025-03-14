@@ -15,7 +15,8 @@ import net.datafaker.Faker;
 
 public class UrlControllerTest extends BaseControllerTest {
 
-    private final String GENERATE_ALIAS_PATH = "/url/new";
+    private final String GENERATE_ALIAS_PATH = "/new";
+    private final String GENERATE_QR_CODE_PATH = "/qr";
     private final String REDIRECT_PATH = "/";
 
     final ObjectMapper mapper = new ObjectMapper();
@@ -53,7 +54,7 @@ public class UrlControllerTest extends BaseControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.get(getAliasUrl(alias)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-                .andExpect(MockMvcResultMatchers.redirectedUrl(req.getFullUrl()));
+                .andExpect(MockMvcResultMatchers.redirectedUrl(req.getUrl()));
     }
 
     @Test
@@ -77,6 +78,18 @@ public class UrlControllerTest extends BaseControllerTest {
         AliasRes alias = mapper.readValue(res.getResponse().getContentAsString(), AliasRes.class);
 
         return alias.getAlias();
+    }
+
+    @Test
+    void shouldGenerateQrCode() throws Exception {
+        FullUrlReq req = new FullUrlReq(faker.internet().url());
+
+        String json = mapper.writeValueAsString(req);
+
+        mvc.perform(MockMvcRequestBuilders.post(GENERATE_QR_CODE_PATH).contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.IMAGE_PNG));
     }
 
     private String getAliasUrl(String alias) {

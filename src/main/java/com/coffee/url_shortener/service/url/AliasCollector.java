@@ -16,9 +16,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 @EnableAsync
-public class AliasCollector  implements InitializingBean, DisposableBean  {
+public class AliasCollector implements InitializingBean, DisposableBean {
+
     private final UrlRepository repository;
     private Thread thread;
+    private final Duration duration = Duration.ofHours(2);
 
     public AliasCollector(UrlRepository repository) {
         this.repository = repository;
@@ -32,9 +34,10 @@ public class AliasCollector  implements InitializingBean, DisposableBean  {
                 repository.deleteAll(urls);
             }
             try {
-                Thread.sleep(Duration.ofHours(2));
+                Thread.sleep(duration);
             } catch (Exception e) {
                 log.warn(e.getLocalizedMessage());
+                break;
             }
         }
     }
@@ -51,6 +54,5 @@ public class AliasCollector  implements InitializingBean, DisposableBean  {
             cleanUselessAlias();
         });
     }
-
 
 }

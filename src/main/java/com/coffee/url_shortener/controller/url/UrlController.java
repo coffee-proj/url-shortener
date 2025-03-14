@@ -1,9 +1,11 @@
 package com.coffee.url_shortener.controller.url;
 
+import java.io.IOException;
+
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coffee.url_shortener.controller.dto.AliasRes;
@@ -21,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/url")
 public class UrlController {
     private final UrlService service;
 
@@ -42,7 +43,7 @@ public class UrlController {
     @PostMapping("/new")
     public ResponseEntity<AliasRes> generateAliasUrl(@Valid @RequestBody FullUrlReq input) {
         Url url = new Url();
-        url.setFullUrl(input.getFullUrl());
+        url.setFullUrl(input.getUrl());
 
         log.info(url.toString());
 
@@ -51,6 +52,18 @@ public class UrlController {
         AliasRes res = new AliasRes(shortened);
 
         return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("/qr")
+    public ResponseEntity<byte[]> generateQR(@Valid @RequestBody FullUrlReq input) throws IOException {
+        Url url = new Url();
+        url.setFullUrl(input.getUrl());
+
+        byte[] image = service.genQrCodeByUrl(input.getUrl());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .body(image);
     }
 
 }
