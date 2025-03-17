@@ -27,8 +27,8 @@ public class Url {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "full_url", nullable = false)
-    private String fullUrl;
+    @Column(name = "url", nullable = false)
+    private String url;
 
     @Column(name = "alias", unique = true, nullable = false)
     private String alias;

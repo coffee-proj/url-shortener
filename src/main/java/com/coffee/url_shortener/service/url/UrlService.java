@@ -30,7 +30,7 @@ public class UrlService {
 
     public String genAndSaveAlias(Url url) {
         do {
-            url.setAlias(AliasGenerator.generateAlias(url.getFullUrl()));
+            url.setAlias(AliasGenerator.generateAlias(url.getUrl()));
         } while (repository.existsByAlias(url.getAlias()));
 
         url = repository.save(url);

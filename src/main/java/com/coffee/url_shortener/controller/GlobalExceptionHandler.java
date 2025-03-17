@@ -45,13 +45,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(LinkNotFoundException.class)
-    public ResponseEntity<ErrorRes> proccessLinkNotFoundException(Exception exception) {
+    public ResponseEntity<ErrorRes> processLinkNotFoundException(Exception exception) {
         log.warn("{}: {}", exception.getClass().getName(), exception.getMessage());
         return createErrorResponse(HttpStatus.NOT_FOUND, new Exception("Alias not found"));
     }
 
     @ExceptionHandler(IOException.class)
-    public ResponseEntity<ErrorRes> proccessIOError(Exception exception) {
+    public ResponseEntity<ErrorRes> processIOError(Exception exception) {
         log.error(exception.getLocalizedMessage());
         return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, new Exception("Something went wrong"));
     }

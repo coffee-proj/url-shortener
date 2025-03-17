@@ -22,10 +22,10 @@ spring:
       ddl-auto: validate
   mvc:
     log-request-details: true
-logging:
-  structured:
-    format:
-      console: ecs
+#logging:
+#  structured:
+#    format:
+#      console: ecs
 
 redis:
   ttl: 120

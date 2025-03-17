@@ -13,7 +13,7 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: full_url
+                  name: url
                   type: varchar(255)
                   constraints:
                     nullable: false

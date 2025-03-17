@@ -53,13 +53,11 @@ public class UrlController {
     @PostMapping("/new")
     public ResponseEntity<AliasRes> generateAliasUrl(@Valid @RequestBody FullUrlReq input) {
         Url url = new Url();
-        url.setFullUrl(input.getUrl());
+        url.setUrl(input.getUrl());
 
-        log.info(url.toString());
+        String alias = service.genAndSaveAlias(url);
 
-        String shortened = service.genAndSaveAlias(url);
-
-        AliasRes res = new AliasRes(shortened);
+        AliasRes res = new AliasRes(alias);
 
         return ResponseEntity.ok(res);
     }
@@ -85,7 +83,7 @@ public class UrlController {
     @PostMapping("/qr")
     public ResponseEntity<byte[]> generateQR(@Valid @RequestBody FullUrlReq input) throws IOException {
         Url url = new Url();
-        url.setFullUrl(input.getUrl());
+        url.setUrl(input.getUrl());
 
         byte[] image = service.genQrCodeByUrl(input.getUrl());
 

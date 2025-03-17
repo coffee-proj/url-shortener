@@ -39,6 +39,6 @@ public class RedirectController {
     public RedirectView redirect(@PathVariable String alias) throws LinkNotFoundException {
         Url url = service.getFullUrlByAlias(alias);
 
-        return new RedirectView(url.getFullUrl());
+        return new RedirectView(url.getUrl());
     }
 }
