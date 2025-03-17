@@ -50,7 +50,6 @@ public class GlobalExceptionHandler {
         return createErrorResponse(HttpStatus.NOT_FOUND, new Exception("Alias not found"));
     }
 
-
     @ExceptionHandler(IOException.class)
     public ResponseEntity<ErrorRes> proccessIOError(Exception exception) {
         log.error(exception.getLocalizedMessage());

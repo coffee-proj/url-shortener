@@ -32,15 +32,23 @@ public class UrlController {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(description = "Success generate alias of URL", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AliasRes.class))),
-            @ApiResponse(description = "Invalid input URL", responseCode = "400", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorRes.class, example = """
-                    {
-                       "timestamp": "2022-03-11T11:16:21.231474959",
-                       "message": "Invalid input data",
-                       "status": "BAD_REQUEST"
-                    }
-                    """))) })
-
+            @ApiResponse(
+                    description = "Success generate alias of URL",
+                    responseCode = "200",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AliasRes.class))),
+            @ApiResponse(
+                    description = "Invalid input URL",
+                    responseCode = "400",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorRes.class, example = """
+                                    {
+                                       "timestamp": "2022-03-11T11:16:21.231474959",
+                                       "message": "Invalid input data",
+                                       "status": "BAD_REQUEST"
+                                    }
+                                    """)))})
     @CrossOrigin
     @PostMapping("/new")
     public ResponseEntity<AliasRes> generateAliasUrl(@Valid @RequestBody FullUrlReq input) {
@@ -57,15 +65,22 @@ public class UrlController {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(description = "Success generate QR-code for URL", responseCode = "200", content = @Content(mediaType = "image/png")),
-            @ApiResponse(description = "Invalid input URL", responseCode = "400", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorRes.class, example = """
-                    {
-                       "timestamp": "2022-03-11T11:16:21.231474959",
-                       "message": "Invalid input data",
-                       "status": "BAD_REQUEST"
-                    }
-                    """))) })
-                    
+            @ApiResponse(
+                    description = "Success generate QR-code for URL",
+                    responseCode = "200",
+                    content = @Content(mediaType = "image/png")),
+            @ApiResponse(
+                    description = "Invalid input URL",
+                    responseCode = "400",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorRes.class, example = """
+                                    {
+                                       "timestamp": "2022-03-11T11:16:21.231474959",
+                                       "message": "Invalid input data",
+                                       "status": "BAD_REQUEST"
+                                    }
+                                    """)))})
     @CrossOrigin
     @PostMapping("/qr")
     public ResponseEntity<byte[]> generateQR(@Valid @RequestBody FullUrlReq input) throws IOException {

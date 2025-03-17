@@ -32,7 +32,7 @@ public class RedirectController {
                         "message": "Alias not found",
                         "status": "NOT_FOUND"
                         }
-                        """)))
+                       \s""")))
     })
     @GetMapping("/{alias}")
     @CrossOrigin

@@ -36,7 +36,6 @@ public class AliasCollector implements InitializingBean, DisposableBean {
             try {
                 Thread.sleep(duration);
             } catch (Exception e) {
-                log.warn(e.getLocalizedMessage());
                 break;
             }
         }
@@ -49,10 +48,8 @@ public class AliasCollector implements InitializingBean, DisposableBean {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-        thread = Thread.startVirtualThread(() -> {
-            cleanUselessAlias();
-        });
+    public void afterPropertiesSet() {
+        thread = Thread.startVirtualThread(this::cleanUselessAlias);
     }
 
 }
